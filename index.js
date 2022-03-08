@@ -1,7 +1,15 @@
-import express from  'express';
+import express, { response } from  'express';
+import { MongoClient, ObjectId } from 'mongodb';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import { shirtsRouter } from './routes/bike.js';
 
+
+dotenv.config();
+console.log(process.env);
 const app=express();
-const PORT=9000;
+
+const PORT=process.env.PORT;
 const shirts= [
     {
         id:"1",
@@ -78,27 +86,22 @@ const shirts= [
       },
       
   ];
+  app.use(express.json());
+  app.use(cors());
+//const  MONGO_URL="mongodb://localhost";
+const MONGO_URL=process.env.MONGO_URL;//hide password through dotenv file
+async function createConnection(){
+  const client=new MongoClient(MONGO_URL);
+  await client.connect();//promise
+  console.log("Mongodb connected");
+  return client
+}
+export const client=await createConnection();
 app.get('/',(request,response)=>{
     response.send("hello customers");
 })
-app.get('/shirts',(request,response)=>{
-  console.log(request.query);
-  const {color}=request.query;
-  console.log(color);
-  let filterColor=shirts;
-  if(color){
-  filterColor=filterColor.filter((a)=>a.color===color)
-  }
-  response.send(filterColor)
-  
-})
-app.get('/shirts/:id',(request,response)=>{
-    const {id}=request.params;
-    console.log(id);
-    const shirt=shirts.find((a)=>a.id===id);
-    console.log(shirt);
-    response.send(shirt);
-})
 
-
+app.use('/shirts',shirtsRouter)
 app.listen(PORT,()=>console.log(`App is started ${PORT}`))
+
+
