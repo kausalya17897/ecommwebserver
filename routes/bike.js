@@ -5,7 +5,8 @@ const router=express.Router();
 
 
 
-router.get('/',async(request,response)=>{
+router
+.route('/').get(async(request,response)=>{
     console.log(request.query);
     const color=request.query;
     {/*console.log(color);
@@ -18,8 +19,15 @@ router.get('/',async(request,response)=>{
     const shirts=await getShirt(color);
     response.send(shirts);
     
+  })
+  .post(async(request,response)=>{
+    const data=request.body;
+    const postdata=await addShirt(data);
+    response.send(postdata);
   });
-  router.get('/:id',async(request,response)=>{
+  router
+  .route('/:id')
+  .get(async(request,response)=>{
       const {id}=request.params;
       console.log(id);
       //db.colection.find({})
@@ -30,7 +38,7 @@ router.get('/',async(request,response)=>{
      ?response.send(shirt)
      :response.send({message:"no matching shirt"});
   })
-  router.delete('/:id',async(request,response)=>{
+  .delete(async(request,response)=>{
     const {id}=request.params;
     console.log(id);
     //db.colection.find({})
@@ -41,12 +49,7 @@ router.get('/',async(request,response)=>{
    ?response.send(shirt)
    :response.send({message:"no matching shirt"});
   })
-  router.post('/',async(request,response)=>{
-    const data=request.body;
-    const postdata=await addShirt(data);
-    response.send(postdata);
-  })
-  router.put('/:id',async(request,response)=>{
+  .put(async(request,response)=>{
     const {id}=request.params;
     const data=request.body;
     const result=await updateShirtById(id, data);
