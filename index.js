@@ -2,7 +2,7 @@ import express, { response } from  'express';
 import { MongoClient, ObjectId } from 'mongodb';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import { shirtsRouter } from './routes/bike.js';
+import { shirtsRouter } from './routes/shirts.js';
 
 
 dotenv.config();

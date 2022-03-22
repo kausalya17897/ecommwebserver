@@ -1,16 +1,17 @@
+import { ObjectId } from 'mongodb';
 import { client } from './index.js';
 
 export async function updateShirtById(id, data) {
   return await client
     .db("shirts")
     .collection("shirtcollection")
-    .updateOne({ id: id }, { $set: data });
+    .updateOne({_id:ObjectId(id ) }, { $set: data });
 }
 export async function deleteShirtById(id) {
   return await client
     .db("shirts")
     .collection("shirtcollection")
-    .deleteOne({ id: id });
+    .deleteOne({_id:ObjectId(id ) });
 }
 export async function addShirt(data) {
   return await client
@@ -22,7 +23,7 @@ export async function getShirtById(id) {
   return await client
     .db("shirts")
     .collection("shirtcollection")
-    .findOne({ id: id });
+    .findOne({_id:ObjectId(id ) });
 }
 export async function getShirt(color) {
   return await client
